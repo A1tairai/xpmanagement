@@ -1,0 +1,27 @@
+version: '3'
+
+networks:
+  test:
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    ports:
+      - 5432:5432
+    env_file:
+      - database.env
+    networks:
+      - test
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      spring.datasource.url: jdbc:postgresql://postgres:5432/xpdatabase
+    ports:
+      - "8080:8080"
+    networks:
+      - test
+
+
