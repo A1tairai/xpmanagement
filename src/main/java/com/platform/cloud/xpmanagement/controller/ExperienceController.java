@@ -1,10 +1,5 @@
 package com.platform.cloud.xpmanagement.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +38,11 @@ public class ExperienceController {
 		}
 		if(experienceRepository.findbyPlayerId(player_id) != null) {
 			Experience experience = experienceRepository.findbyPlayerId(player_id);
-			experience.setBalance(experienceLogRepository.findbyPlayerId(player_id).stream().collect(Collectors.summingInt(ExperienceLog::getPoints)) + experienceLog.getPoints());
+			Integer oldBalance = 0;
+			if(experienceLogRepository.findbyPlayerId(player_id) != null) {
+				oldBalance = experienceLogRepository.findbyPlayerId(player_id);
+			}
+			experience.setBalance(oldBalance + experienceLog.getPoints());
 			experienceLog.setExperience(experience);;
 			experienceLogRepository.save(experienceLog);			
 		}else {

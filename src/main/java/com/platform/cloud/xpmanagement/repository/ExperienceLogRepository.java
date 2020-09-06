@@ -12,6 +12,6 @@ import com.platform.cloud.xpmanagement.model.ExperienceLog;
 
 @Repository
 public interface ExperienceLogRepository extends JpaRepository<ExperienceLog, Serializable>{
-	@Query(value = "SELECT * FROM experience_log t WHERE t.player_id = ?1", nativeQuery = true)
-	List<ExperienceLog> findbyPlayerId(Long playerId);
+	@Query(value = "SELECT SUM(amount) FROM experience_log t WHERE t.player_id = ?1", nativeQuery = true)
+	Integer findbyPlayerId(Long playerId);
 }
